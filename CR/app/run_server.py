@@ -1,20 +1,14 @@
-# USAGE
-# Start the server:
-# 	python run_front_server.py
-# Submit a request via Python:
-#	python simple_request.py
-
 # import the necessary packages
 import dill
 import pandas as pd
 import os
-
-dill._dill._reverse_typemap['ClassType'] = type
-# import cloudpickle
 import flask
 import logging
 from logging.handlers import RotatingFileHandler
 from time import strftime
+
+dill._dill._reverse_typemap['ClassType'] = type
+# import cloudpickle
 
 # initialize our Flask application and the model
 app = flask.Flask(__name__)
@@ -49,6 +43,7 @@ def predict():
     data = {"success": False}
     dt = strftime("[%Y-%b-%d %H:%M:%S]")
     # ensure an image was properly uploaded to our endpoint
+
     if flask.request.method == "POST":
 
         geography, gender, tenure, hascrcard, isactivemember, creditscore, age, balance, numofproducts, estimatedsalary\
@@ -85,21 +80,23 @@ def predict():
         if request_json['EstimatedSalary']:
             estimatedsalary = request_json['EstimatedSalary']
 
-        # logger.info(f'{dt} Data: description={description}, company_profile={company_profile}, benefits={benefits}')
+        logger.info(
+            f'{dt} Data: geography={geography}, gender={gender}, tenure={tenure}, hascrcard={hascrcard}, isactivemember={isactivemember}, creditscore={creditscore}, age={age}, balance={balance}, numofproducts={numofproducts}, estimatedsalary={estimatedsalary}')
         try:
+
             # preds = model.predict_proba()
             preds = model.predict_proba(pd.DataFrame(
                 {
-                    'Geography': geography,
-                    'Gender': gender,
-                    'Tenure': tenure,
-                    'HasCrCard': hascrcard,
-                    'IsActiveMember': isactivemember,
-                    'CreditScore': creditscore,
-                    'Age': age,
-                    'Balance': balance,
-                    'NumOfProducts': numofproducts,
-                    'EstimatedSalary': estimatedsalary,
+                    'Geography': [geography],
+                    'Gender': [gender],
+                    'Tenure': [tenure],
+                    'HasCrCard': [hascrcard],
+                    'IsActiveMember': [isactivemember],
+                    'CreditScore': [creditscore],
+                    'Age': [age],
+                    'Balance': [balance],
+                    'NumOfProducts': [numofproducts],
+                    'EstimatedSalary': [estimatedsalary],
                 }
             ))
         except AttributeError as e:
