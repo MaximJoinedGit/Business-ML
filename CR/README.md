@@ -21,18 +21,18 @@ EstimatedSalary - Предполагаемая ЗП.
 Модель: Градиентный бустинг
 
 ## Клонируем репозиторий и создаем образ
-'''
+```
 $ git clone https://github.com/MaximJoinedGit/Business-ML/tree/main/CR.git
 $ cd CR
 $ docker build . -t course_project
-'''
+```
 
 ## Запускаем контейнер
 
 Создаем каталог локально и сохраняем туда предобученную модель (<your_local_path_to_pretrained_models> - полный путь к каталогу)
-'''
+```
 $ docker run -d -p 8180:8180 -v <your_local_path_to_pretrained_models>:/app/app/models/ course_project
-'''
+```
 
 ## Переходим на localhost:8180
 
